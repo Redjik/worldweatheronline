@@ -1,4 +1,6 @@
-worldweatheronline
+WorldWeatherOnline
 ==================
 
-API for worldweatheronline
+API for WorldWeatherOnline
+
+Check index.php for usage.
