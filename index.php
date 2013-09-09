@@ -9,6 +9,7 @@ $loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 $loader->registerNamespace('WorldWeatherOnline',__DIR__);
 $loader->register();
 
+use WorldWeatherOnline\Translation\Translator;
 use WorldWeatherOnline\WeatherForecasts;
 use WorldWeatherOnline\Driver\Driver;
 
@@ -16,7 +17,8 @@ $apiKey = 'Your Api Key';
 $driver = Driver::factory($apiKey);
 $driver->setCity('London');
 
-$worldWeather = new WeatherForecasts($driver);
+$translator = new Translator();
+$worldWeather = new WeatherForecasts($driver,$translator);
 
 /** @var $worldWeather WeatherForecasts[] */
 foreach ($worldWeather as $weather)

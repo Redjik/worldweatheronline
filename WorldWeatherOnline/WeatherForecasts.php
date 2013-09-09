@@ -12,15 +12,20 @@ use WorldWeatherOnline\Translation\Translator;
 class WeatherForecasts implements \Iterator
 {
 	protected $data = array();
+	
+	protected $translator;
 
 	/**
 	 * @param Driver $driver
+	 * @param Translator $translator
 	 * @throws Exception
 	 */
-	public function __construct(Driver $driver)
+	public function __construct(Driver $driver, Translator $translator)
 	{
 		$data = $driver->getWeatherData();
 
+		$this->translator = $translator;
+		
 		if(empty($data) || !isset($data->data)){
 			throw new Exception('Service returned no data');
 		}
@@ -98,7 +103,7 @@ class WeatherForecasts implements \Iterator
 	public function getWeatherString()
 	{
 		$data = current($this->data);
-		return Translator::translateCode($data->weatherCode);
+		return $this->translator->translateCode($data->weatherCode);
 	}
 
 	/**
@@ -107,7 +112,7 @@ class WeatherForecasts implements \Iterator
 	public function getWindDirection()
 	{
 		$data = current($this->data);
-		return Translator::translateWindDirection($data->winddirection);
+		return $this->translator->translateWindDirection($data->winddirection);
 	}
 
 	/**
@@ -116,7 +121,7 @@ class WeatherForecasts implements \Iterator
 	public function getWindDir16Points()
 	{
 		$data = current($this->data);
-		return Translator::translateWindDirection($data->winddir16Point);
+		return $this->translator->translateWindDirection($data->winddir16Point);
 	}
 
 	/**
@@ -155,18 +160,9 @@ class WeatherForecasts implements \Iterator
 	public function getIcon()
 	{
 		$data = current($this->data);
-		return Translator::getIconName($data->weatherCode);
+		return $this->translator->getIconName($data->weatherCode);
 	}
 
-
-	/**
-	 * Sets language for Weather condition and Wind direction in 16-point compass
-	 * @param string $language
-	 */
-	public function setLanguage($language)
-	{
-		Translator::setLanguage($language);
-	}
 
 	public function renderPoweredBy($return = false)
 	{

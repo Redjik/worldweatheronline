@@ -18,6 +18,8 @@ abstract class Driver
 
 	const FORMAT = 'json';
 
+	protected static $data;
+
 	protected $apiKey;
 
 	protected $premiumAccess = false;
@@ -66,6 +68,8 @@ abstract class Driver
 	{
 		$this->apiKey = $apiKey;
 
+		static::$data = null;
+
 		if ($apiKey === null){
 			throw new Exception('You should specify api key');
 		}
@@ -109,11 +113,12 @@ abstract class Driver
 			throw new Exception('Could not resolve connection: '.$errstr);
 		},E_ALL);
 
-		$data = $this->getWeatherDataInner();
-
+		if (static::$data === null){
+			static::$data = $this->getWeatherDataInner();
+		}
 		restore_error_handler();
 
-		return json_decode($data);
+		return json_decode(static::$data);
 	}
 
 	/**

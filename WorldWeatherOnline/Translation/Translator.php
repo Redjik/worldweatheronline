@@ -8,17 +8,25 @@ namespace WorldWeatherOnline\Translation;
 
 class Translator
 {
-	public static $lang;
+	public $lang;
 
 	/**
-	 * @param $lang
+	 * @param string $lang name of the file in files folder (.php extension excuded)
+	 */
+	public function __construct($lang = 'en')
+	{
+		$this->setLanguage($lang);
+	}
+
+	/**
+	 * @param string $lang
 	 * @throws Exception
 	 */
-	public static function setLanguage($lang)
+	protected function setLanguage($lang)
 	{
-		$file = __DIR__.'/'.$lang.'.php';
+		$file = __DIR__.'/files/'.$lang.'.php';
 		if (is_readable($file)){
-			static::$lang = include_once($file);
+			$this->lang = include_once($file);
 		}else{
 			throw new Exception('File with translation can not be read');
 		}
@@ -29,15 +37,14 @@ class Translator
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public static function translateCode($code)
+	public function translateCode($code)
 	{
-		static::setDefaultLanguage();
 
-		if (!isset(static::$lang['codes'][(int)$code])){
+		if (!isset($this->lang['codes'][(int)$code])){
 			throw new Exception('No translation for current weather code - '.$code);
 		}
 
-		return static::$lang['codes'][(int)$code];
+		return $this->lang['codes'][(int)$code];
 	}
 
 	/**
@@ -45,15 +52,14 @@ class Translator
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public static function translateWindDirection($direction)
+	public function translateWindDirection($direction)
 	{
-		static::setDefaultLanguage();
 
-		if (!isset(static::$lang['wd'][$direction])){
+		if (!isset($this->lang['wd'][$direction])){
 			throw new Exception('No translation for current wind direction - '.$direction);
 		}
 
-		return static::$lang['wd'][$direction];
+		return $this->lang['wd'][$direction];
 	}
 
 
@@ -62,24 +68,14 @@ class Translator
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public static function getIconName($code)
+	public function getIconName($code)
 	{
-		static::setDefaultLanguage();
 
-		if (!isset(static::$lang['icons'][(int)$code])){
+		if (!isset($this->lang['icons'][(int)$code])){
 			throw new Exception('No icon for current weather code - '.$code);
 		}
 
-		return static::$lang['icons'][(int)$code];
-	}
-
-	/**
-	 * Sets default lang as english
-	 */
-	protected static function setDefaultLanguage()
-	{
-		if (static::$lang === null)
-			static::setLanguage('en');
+		return $this->lang['icons'][(int)$code];
 	}
 
 }
