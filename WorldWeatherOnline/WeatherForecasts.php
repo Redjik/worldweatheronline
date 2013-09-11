@@ -115,6 +115,12 @@ class WeatherForecasts implements \Iterator
 		return $this->translator->translateWindDirection($data->winddirection);
 	}
 
+	public function getWindDirectionIcon()
+	{
+		$data = current($this->data);
+		return $this->translator->getWDIcon($data->winddirection);
+	}
+
 	/**
 	 * @return string Wind direction in 16-point compass
 	 */

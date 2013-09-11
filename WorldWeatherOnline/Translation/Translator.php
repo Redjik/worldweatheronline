@@ -64,6 +64,22 @@ class Translator
 
 
 	/**
+	 * @param $direction
+	 * @return mixed
+	 * @throws Exception
+	 */
+	public function getWDIcon($direction)
+	{
+
+		if (!isset($this->lang['wd-icons'][$direction])){
+			throw new Exception('No icon for current wind direction - '.$direction);
+		}
+
+		return $this->lang['wd-icons'][$direction];
+	}
+
+
+	/**
 	 * @param $code
 	 * @return mixed
 	 * @throws Exception
