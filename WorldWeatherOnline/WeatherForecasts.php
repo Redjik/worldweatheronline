@@ -225,7 +225,12 @@ class WeatherForecasts implements \Iterator
 	 */
 	public function valid()
 	{
-		return current($this->data);
+		if (current($this->data) === false){
+			$this->rewind();
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
